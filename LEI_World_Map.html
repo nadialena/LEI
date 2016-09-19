@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+//Rando comment!!!
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>LEI: LOUs Across the World</title>
 		<script type="text/javascript" src="../d3/d3.v3.js"></script>
 		<style type="text/css">
-			/* No style rules here yet */		
+			/* No style rules here yet */
 		</style>
 	</head>
 	<body>
@@ -32,7 +33,7 @@
           .append("svg")
           .attr("width", w)
           .attr("height", h);
-						
+
 			var color =
         d3.scale.quantize()
           .range([
@@ -49,43 +50,43 @@
 						"rgb(204,235,197)",
 						"rgb(255,237,111)"
           ]);
-						
-						
-			//Load in the LOU data from CSV	
+
+
+			//Load in the LOU data from CSV
 			d3.csv("LOUs.csv", function(data) {
-			
+
 			  var rScale =
           d3.scale.threshold()
             .domain([10,100,1000,10000,50000,100000,150000])
             .range([0, 40, 80, 120, 160, 200, 240, 255])
-				
+
 			  var gScale =
           d3.scale.threshold()
             .domain([10,100,1000,10000,50000,100000,150000])
             .range([157, 150, 143, 136, 129, 122, 115, 111])
-				
+
 			  var bScale =
           d3.scale.threshold()
             .domain([10,100,1000,10000,50000,100000,150000])
             .range([178, 156, 134, 102, 80, 58, 36,0])
-								
+
 				//Load in GeoJSON data
 				d3.json("hopeful_world_no_ant.json", function(json) {
-				
+
 					for (var i = 0; i < data.length; i++) {
 						var dataCountry =  data[i].Country;
 						var dataCount = parseFloat(data[i].LEI_count);
-						
+
 						for (var j = 0; j < json.features.length; j++) {
 							var jsonCountry = json.features[j].properties.name;
-							
+
 							if (dataCountry == jsonCountry) {
 								json.features[j].properties.value = dataCount;
 								break;
               }
             }
           }
-						
+
 					//Bind data and create one path per GeoJSON feature
 					svg
             .selectAll("path")
@@ -95,7 +96,7 @@
 						.attr("d", path)
 						.style("fill", function(d) {
 							var value = d.properties.value;
-							
+
 							if (value) {
 								return 'rgb(' + Math.floor(rScale(value)) + ',' + Math.floor(gScale(value)) + ',' + Math.floor(bScale(value)) + ')';
 							} else {
@@ -106,7 +107,7 @@
 				/*
 				//Load in LOU lat and long
 				d3.csv("LOUs.csv", function(data) {
-				
+
 					svg.selectAll("circle")
 						.data(data)
 						.enter()
@@ -121,10 +122,10 @@
 						.style("fill","tomato")
 						.style("opacity",0.5);
 				*/
-        
+
 				});
 			});
-      
+
 		</script>
 	</body>
 </html>
